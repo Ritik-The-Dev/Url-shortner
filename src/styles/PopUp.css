@@ -1,0 +1,224 @@
+.url-popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  
+  .url-popup {
+    background: white;
+    width: 540px;
+    border-radius: 8px;
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3B3C51;
+    padding: 10px 20px;
+    color: white;
+  }
+  
+  .popup-header h3 {
+    margin: 0;
+  }
+  
+  .close-btn {
+    width: 31px;
+    height: 31px;
+    cursor: pointer;
+  }
+  
+  .popup-body {
+    padding: 0px 20px;
+    margin-top: 15px;
+  }
+  
+  .popup-body label {
+    font-weight: bold;
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .popup-body .required {
+    color: red;
+  }
+  
+  .popup-body input,
+  .popup-body textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .popup-body textarea{
+    min-height: 147px;
+    max-height: 147px;
+    max-width: 100%;
+    min-width: 100%;
+    outline: none;
+  }
+
+  .toggle-containers {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .popup-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 100px;
+    padding: 20px;
+    background-color: #ebecee;
+  }
+  
+  .clear-btn,
+  .create-btn {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .clear-btn {
+    background: transparent;
+    color: #3B3C51;
+  }
+
+  .create-btn:hover {
+    opacity: 90%;
+  }
+
+  .create-btn {
+    background: #1B48DA;
+    color: white;
+  }
+  
+
+  .toggle-container {
+    display: flex;
+    align-items: center;
+    width: 32.5px;
+    height: 20px;
+    border-radius: 62.5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .toggle-container.enabled {
+    background: #414EF1;
+  }
+  
+  .toggle-container.disabled {
+    border: 1.25px solid #B0B0B0;
+  }
+  
+  .toggle-circle {
+    width: 15px;
+    height: 15px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .toggle-container.enabled .toggle-circle {
+    transform: translateX(15px);
+  }
+  
+  .toggle-container.disabled .toggle-circle {
+    width: 10px;
+    height: 10px;
+    background: #B0B0B0;
+    transform: translateX(3.75px);
+  }
+  
+  .error-label{
+    color: #FF0101;
+    font-size: 12px;
+  }
+
+  .error-outline{
+    border: 1px solid #FF0101 !important;
+  }
+
+  .remove-popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  
+  .remove-popup {
+    background: white;
+    width: 496px;
+    height: 222px;
+    border-radius: 8px;
+    padding: 10px 20px;
+    position: relative;
+  }
+
+  .remove-popup-header{
+    position: absolute;
+    right: 10px;
+  }
+
+  .remove-popup-body{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 40px;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .remove-text{
+    font-size: 16px;
+  }
+
+  .remove-btns{
+    display: flex;
+    gap: 40px;
+  }
+
+  .remove-btns button{
+    width: 179px;
+    height: 34px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .remove-no-btn{
+    background-color: #ECECEE;
+    cursor: pointer;
+  }
+
+  .remove-yes-btn{
+    background-color: #1B48DA;
+    color: white;
+    cursor: pointer;
+  }

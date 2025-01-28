@@ -1,0 +1,149 @@
+.main-login{
+    background-color: #ffffff;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.login-container-left{
+    width: 40%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 20px 40px;
+}
+
+.login-logo{
+    object-fit: cover;
+    width: 133.34px;
+    cursor: pointer;
+    height: 30.33px;
+}
+
+.login-container-right{
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container-top-right{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 20px;
+    padding: 20px 40px;
+    position: absolute;
+    top: 0;
+    right:0;
+}
+
+.register-nav-signup:hover{
+    opacity: 90%;
+    cursor: pointer;
+}
+
+.register-nav-signup{
+    color: #3B3C51;
+    font-weight: 500;
+    font-size: 14px;
+    background: transparent;
+    outline: none;
+    border: none;
+}
+
+.login-nav-signup:hover{
+    opacity: 90%;
+}
+
+.login-nav-signup{
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 14px;
+    background: #1B48DA;
+    padding: 10px 20px;
+    height: 39px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.login-form{
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.login-title{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.input-divs{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-divs input{
+    width: 411px;
+    height: 42px;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #3B3C51;
+}
+
+.submit-btn{
+    width: 411px;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1B48DA;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submit-btn:hover{
+    opacity: 90%;
+}
+
+.already-text{
+    text-align: center;
+    width: 411px;
+    font-size: 16px;
+    color: #3B3C51;
+    font-weight: 500;
+}
+
+.colored-text{
+    color: #1B48DA;
+    cursor: pointer;
+}
+
+.password-input-container {
+    position: relative;
+  }
+  
+input[type="password"] {
+    padding-right: 30px;
+  }
+  
+.password-eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  

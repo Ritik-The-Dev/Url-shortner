@@ -1,0 +1,129 @@
+.link-page {
+    height: 100%;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+    padding: 20px 40px;
+  }
+  
+  .custom-table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    width: 90%;
+    height: 90%;
+    margin-top: 20px;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9f9f9;
+    min-width: 800px;
+  }
+  
+  .custom-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #f3f7fd;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 16px;
+    padding-left: 20px;
+    text-align: left;
+    min-width: 176px;
+    max-width: 300px;
+  }
+  
+  .custom-table th {
+    font-weight: bold;
+    color: #3b3c51;
+  }
+  
+  .custom-table th.sortable {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .custom-table th .sort-icon {
+    font-size: 20px;
+    color: #999;
+  }
+  
+  .custom-table tr:hover {
+    background-color: #eef2f7;
+  }
+  
+  .custom-table td {
+    color: #3b3c51;
+  }
+  
+  .custom-table td.status-active {
+    color: #1eb036;
+  }
+  
+  .custom-table td.status-inactive {
+    color: #b0901e;
+  }
+  
+  .custom-table td .icon {
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 18px;
+  }
+  
+  .custom-table td .action-icons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-table td .action-icons .icon {
+    color: #999;
+    transition: color 0.3s ease;
+  }
+  
+  .custom-table td .action-icons .icon:hover {
+    color: #333;
+  }
+  
+  .border-right {
+    border-right: 1px solid #ececf2;
+  }
+
+  .relative{
+    position: relative;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .absolute{
+    position: absolute;
+    right: 0;
+  }
+
+  .copy-btn{
+    background-color: white;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 90%;
+    overflow: hidden;
+  }
+
+  .copy-icon{
+    width: 20px;
+    height: 20px;
+  }

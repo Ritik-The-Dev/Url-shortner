@@ -1,0 +1,162 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scrollable-content {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+.scrollable-content::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable-content:hover::-webkit-scrollbar {
+  display: block;
+}
+
+input {
+  outline: none !important;
+}
+
+.app-side {
+  display: flex;
+}
+
+.main-app {
+  width: calc(100vw - 240px);
+  height: calc(100vh - 72px);
+}
+
+.toast-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 20px;
+  height: 20px; 
+}
+
+.toast-icon-container svg {
+  width: 100%; 
+  height: auto;
+  transition: transform 0.3s ease-in-out; 
+}
+
+.toast-icon-container:hover svg {
+  transform: translateX(100%);
+}
+
+
+  
+.pagination-container {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pagination-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid #dfe3e8;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination-button.bg-blue {
+  background-color: #b1b6f9;
+}
+
+.pagination-button.bg-white {
+  background-color: #ffffff;
+}
+
+.pagination-button.active {
+  border-color: #283093;
+}
+
+.pagination-button.inactive {
+  border-color: #dfe3e8;
+}
+
+.pagination-button-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #212b36;
+}
+
+.pagination-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 32px;
+  background-color: #ffffff;
+  border: 1px solid #dfe3e8;
+  border-radius: 4px;
+}
+
+.pagination-arrow {
+  width: 24px;
+  height: 24px;
+}
+
+.pagination-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-select {
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.pagination-footer-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.inner-loader{
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

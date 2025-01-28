@@ -1,0 +1,14 @@
+{
+    "routes": [
+      { "src": "/", "dest": "/" },
+      { "src": "/login", "dest": "/" },
+      { "src": "/register", "dest": "/" },
+      { "src": "/dashboard", "dest": "/" },
+      { "src": "/dashboard/(.*)", "dest": "/" },
+      { "src": "/create-form/(.*)", "dest": "/" },
+      { "src": "/analytics/(.*)", "dest": "/" },
+      { "src": "/forms/(.*)", "dest": "/" },
+      { "src": "/settings", "dest": "/" },
+      { "src": "/*", "dest": "/" }
+    ]
+  }
