@@ -1,7 +1,8 @@
 import { useState } from "react";
 import apiCall from "./apiCall";
 
-const API_URL = "http://localhost:999/api/v1";
+// const API_URL = "http://localhost:999/api/v1";
+const API_URL = "https://url-shorteners.vercel.app/api/v1";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
