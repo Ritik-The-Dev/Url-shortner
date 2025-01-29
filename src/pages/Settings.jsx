@@ -76,15 +76,19 @@ function Settings() {
   }, [userInfo]);
 
   useEffect(() => {
+   if(updateData){
     if (
-      updateData?.name?.trim() == userInfo?.name?.trim() &&
-      updateData?.email?.trim() == userInfo?.email?.trim() &&
+      updateData?.name?.trim() == userInfo?.username?.trim() &&
+      updateData?.email?.trim().toLowerCase() == userInfo?.email?.trim().toLowerCase() &&
       updateData?.number == userInfo?.number
     ) {
       setIsUpdated(false);
     } else {
       setIsUpdated(true);
     }
+   } else {
+    setIsUpdated(false);
+   }
   }, [updateData]);
 
   const CallSettings = async () => {

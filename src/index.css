@@ -66,8 +66,6 @@ input {
 .toast-icon-container:hover svg {
   transform: translateX(100%);
 }
-
-
   
 .pagination-container {
   margin-top: 8px;
@@ -100,17 +98,21 @@ input {
   background-color: #ffffff;
 }
 
-.pagination-button.active {
-  border-color: #283093;
-}
-
-.pagination-button.inactive {
-  border-color: #dfe3e8;
-}
 
 .pagination-button-text {
   font-size: 14px;
   font-weight: bold;
+}
+
+.pagination-button.active {
+  border-color: #4200FF;
+  color: #4200FF;
+  background-color: white;
+}
+
+.pagination-button.inactive {
+  border-color: #dfe3e8;
+  background-color: white;
   color: #212b36;
 }
 
