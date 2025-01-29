@@ -79,7 +79,7 @@ function Links() {
       setLinksData(response);
       if (response?.count <= (currentPage - 1) * 10) {
         setCurrentPage(1);
-      }   
+      }
     }
   };
 
@@ -95,11 +95,11 @@ function Links() {
   }, []);
 
   useEffect(() => {
-  debouncedCallLinks();
-  return () => {
-    debouncedCallLinks.cancel();
-  };
-}, [currentPage, search]);
+    debouncedCallLinks();
+    return () => {
+      debouncedCallLinks.cancel();
+    };
+  }, [currentPage, search]);
 
   return (
     <div className="main-app">
@@ -191,7 +191,8 @@ function Links() {
                       </td>
                       <td className="border-right text-wrap">
                         <div className="relative">
-                          {row.shortLink}
+                          {row.shortLink.slice(0, 24)}
+                          {row.shortLink.length > 24 ? '...' : ''}
                           <div
                             onClick={() => handleCopy(row.shortLink)}
                             className="copy-btn absolute"
