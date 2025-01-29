@@ -13,6 +13,21 @@ import Loader from "../components/Loader";
 import { useDeleteLink, useEditLink, useGetLinks } from "../api/hooks";
 import { debounce } from "lodash";
 
+const FormatDate = (timestamp) => {
+  const date = new Date(timestamp);
+
+  const formattedDate = date.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  });
+
+  return formattedDate;
+};
+
 function Links() {
   const search = useRecoilValue(LINKSEARCH);
   const [urlData, setUrlData] = useState(undefined);
@@ -185,7 +200,7 @@ function Links() {
                 {linksData?.data?.length ? (
                   linksData?.data?.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                      <td className="border-right">{row.date}</td>
+                      <td className="border-right">{FormatDate(row.date)}</td>
                       <td className="border-right text-wrap">
                         {row.destinationUrl}
                       </td>
