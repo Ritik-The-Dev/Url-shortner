@@ -1,17 +1,23 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export default async function apiCall(method, url, data = {}, headers = {},showToast=true){
+export default async function apiCall(method, url, data = {},showToast=true){
   try {
+    const token = localStorage.getItem("token")
     const response = await axios({
       method,
       url,
       data,
-      headers,
-      withCredentials: true,
+      headers:{
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
     });
 
     if (response.data?.success) {
+      if(response.data?.token){
+        localStorage.setItem("token", response.data.token);
+      }
       showToast && response?.data?.message && toast.success(response?.data?.message)
       return response.data;
     } else {
