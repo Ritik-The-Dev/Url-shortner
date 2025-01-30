@@ -39,12 +39,12 @@ input {
   outline: none !important;
 }
 
-.app-side {
+.app{
   display: flex;
 }
 
 .main-app {
-  width: calc(100vw - 240px);
+  width: 99%;
   height: calc(100vh - 72px);
 }
 

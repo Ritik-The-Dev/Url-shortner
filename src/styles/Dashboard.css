@@ -1,5 +1,5 @@
 .dashboard-Comp{
-    width: 433px;
+    width: 460px;
     border: 1px solid #ECECF2;
     border-radius: 10px;
     height: 50vh;
@@ -60,11 +60,10 @@
     text-wrap: nowrap;
     justify-content: space-between;
     width: 100%;
-    gap: 10px;
 }
 
 .table-charts{
-    width: 250px;
+    width: 220px;
     height: 15px;
     display: flex;
 }
@@ -77,5 +76,30 @@
 .table-chart-text{
     font-weight: bold;
     font-size: 16px;
-    width: 79px;
+    width: 104px;
+    text-wrap: wrap;
+}
+
+.text-end{
+    width: 70px;
+    text-align: end;
+}
+
+@media screen and (max-width:1300px) {
+    .dashboard-Comp{
+        width: 460px;
+        /* padding: 20px 10px; */
+    }
+    .total-clicks-span{
+        width: 97%;
+    }
+    .dashboard-detailed-data{
+        width: 97%;
+    }
+}
+
+@media screen and (max-width:1200px) {
+    .dashboard-Comp{
+        width: 415px;
+    }
 }

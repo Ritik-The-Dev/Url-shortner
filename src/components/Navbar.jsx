@@ -137,15 +137,6 @@ function Navbar() {
   return (
     <>
       <nav className="nav">
-        <div className="left-nav">
-          <img
-            src={Images.logo}
-            alt="logo"
-            className="login-logo"
-            onClick={() => navigate("/")}
-            style={{ cursor: "pointer" }}
-          />
-        </div>
         <div className="right-nav">
           <div className="right-nav-1">
             {say.type === "evening" ? (

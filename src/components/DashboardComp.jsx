@@ -15,7 +15,7 @@ function DashboardComp({ name = "", data = [] , totalClicks=0}) {
                     width:`${((elem.count/totalClicks)*100)}%`
                 }} />
                 </span>
-                <span className="table-chart-text">{elem.count}</span>
+                <span className="table-chart-text text-end">{elem.count}</span>
               </div>
             );
           })

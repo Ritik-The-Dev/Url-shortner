@@ -36,13 +36,13 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className="app">
       {location.pathname !== "/login" && location.pathname !== "/register" && (
-        <Navbar />
+        <SideBar />
       )}
       <div className="app-side">
         {location.pathname !== "/login" &&
-          location.pathname !== "/register" && <SideBar />}
+          location.pathname !== "/register" && <Navbar />}
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
@@ -54,7 +54,7 @@ function App() {
         </Routes>
       </div>
       {loading && <Loader text={"Setting Things Up for You..."} />}
-    </>
+    </div>
   );
 }
 

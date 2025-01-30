@@ -40,8 +40,16 @@
     padding: 16px;
     padding-left: 20px;
     text-align: left;
-    min-width: 176px;
+    min-width: 105px;
     max-width: 300px;
+  }
+
+  .min-w-176{
+    min-width: 176px !important;
+  }
+
+  .min-w-128{
+    min-width: 128px !important;
   }
   
   .custom-table th {

@@ -39,3 +39,8 @@ export const ANALYTICPAGE = atom({
   key: "analyticsPage",
   default: 1,
 })
+
+export const NAVOPEN = atom({
+  key: "navOpen",
+  default: true,
+})

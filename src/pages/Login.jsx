@@ -3,14 +3,14 @@ import Images from "../assets";
 import { useLogin } from "../api/hooks";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {useSetRecoilState} from 'recoil'
-import {USERDATA} from '../recoil/recoil'
-import Loader from '../components/Loader';
+import { useSetRecoilState } from "recoil";
+import { USERDATA } from "../recoil/recoil";
+import Loader from "../components/Loader";
 import toast from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
-  const setUserData = useSetRecoilState(USERDATA)
+  const setUserData = useSetRecoilState(USERDATA);
   const { login, loading } = useLogin();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -21,8 +21,8 @@ function Login() {
     e.preventDefault();
     try {
       const response = await login(loginData);
-      if(response && response?.success){
-        setUserData(response?.data)
+      if (response && response?.success) {
+        setUserData(response?.data);
         navigate("/");
       }
     } catch (error) {
@@ -36,18 +36,24 @@ function Login() {
         className="login-container-left"
         style={{ backgroundImage: `url(${Images.loginBackground})` }}
       >
-        <img
-          src={Images.logo}
-          alt="logo"
-          className="login-logo"
-        />
+        <img src={Images.logo} alt="logo" className="login-logo" />
       </div>
       <div className="login-container-right">
         <div className="login-container-top-right">
-          <button className="register-nav-signup" onClick={() => navigate("/login")}>
+          <div className="sm-logo">
+          <img src={Images.logo} alt="logo" className="md-login-logo" />
+            <img src={Images.smLogo} alt="logo" className="sm-login-logo" />
+          </div>
+          <button
+            className="register-nav-signup"
+            onClick={() => navigate("/login")}
+          >
             Login
           </button>
-          <button className="login-nav-signup" onClick={() => navigate("/register")}>
+          <button
+            className="login-nav-signup"
+            onClick={() => navigate("/register")}
+          >
             SignUp
           </button>
         </div>
@@ -63,7 +69,9 @@ function Login() {
               required
               placeholder="Email Id"
               value={loginData.email}
-              onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+              onChange={(e) =>
+                setLoginData({ ...loginData, email: e.target.value })
+              }
             />
             <div className="password-input-container">
               <input
@@ -71,7 +79,9 @@ function Login() {
                 required
                 placeholder="Password"
                 value={loginData.password}
-                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, password: e.target.value })
+                }
               />
             </div>
           </div>
@@ -80,7 +90,10 @@ function Login() {
           </button>
           <span className="already-text">
             Don't have an account?{" "}
-            <span className="colored-text" onClick={() => navigate("/register")}>
+            <span
+              className="colored-text"
+              onClick={() => navigate("/register")}
+            >
               SignUp
             </span>
           </span>

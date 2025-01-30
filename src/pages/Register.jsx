@@ -106,6 +106,10 @@ function Register() {
       </div>
       <div className="login-container-right">
         <div className="login-container-top-right">
+          <div className="sm-logo">
+          <img src={Images.logo} alt="logo" className="md-login-logo" />
+            <img src={Images.smLogo} alt="logo" className="sm-login-logo" />
+          </div>
           <button
             className="register-nav-signup"
             onClick={() => navigate("/register")}

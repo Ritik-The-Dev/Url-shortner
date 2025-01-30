@@ -138,7 +138,7 @@ function Analytics() {
                 {analyticsData?.data?.length ? (
                   analyticsData?.data?.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                      <td className="border-right">{FormatDate(row.date)}</td>
+                      <td className="border-right min-w-176">{FormatDate(row.date)}</td>
                       <td className="border-right text-wrap">
                         {truncateText(row.destinationUrl)}
                       </td>
@@ -146,7 +146,7 @@ function Analytics() {
                         {truncateText(row.shortLink)}
                       </td>
                       <td className="border-right">{row.ipAddress}</td>
-                      <td className="border-right">{row.userDevice}</td>
+                      <td className="border-right min-w-128">{row.userDevice}</td>
                     </tr>
                   ))
                 ) : (

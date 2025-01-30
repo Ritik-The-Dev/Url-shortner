@@ -200,7 +200,7 @@ function Links() {
                 {linksData?.data?.length ? (
                   linksData?.data?.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                      <td className="border-right">{FormatDate(row.date)}</td>
+                      <td className="border-right min-w-176">{FormatDate(row.date)}</td>
                       <td className="border-right text-wrap">
                         {row.destinationUrl}
                       </td>

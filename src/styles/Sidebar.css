@@ -2,10 +2,18 @@
     padding: 20px;    
     width: 240px;
     border-right: 1px solid #ECECF2;
+    background-color: white;
+  }
+  
+  .sidebar-logo{
+      object-fit: cover;
+      width: 133.34px;
+      cursor: pointer;
+      height: 30.33px;
+      margin-bottom: 40px;
   }
   
   .side-nav-items {
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -42,4 +50,22 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
+
+  .close-nav{
+    display: none;
+  }
   
+
+  @media screen and (max-width : 1100px) {
+    .close-nav{
+      display: flex;
+      width: 100%;
+      justify-content: end;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .close-nav-icon{
+      font-size: 30px;
+      height: 100%;
+    }
+  }
