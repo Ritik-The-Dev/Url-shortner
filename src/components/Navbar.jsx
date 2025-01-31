@@ -1,16 +1,17 @@
 import "../styles/Navbar.css";
 import Images from "../assets";
 import UrlPopUp from "./UrlPopUp";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import Loader from "../components/Loader";
 import { IoMdAdd } from "react-icons/io";
-import { ANALYTICSEARCH, LINKSDATA, LINKSEARCH } from "../recoil/recoil";
+import { ANALYTICSEARCH, LINKSDATA, LINKSEARCH, NAVOPEN } from "../recoil/recoil";
 import { useCreateLink } from "../api/hooks";
 import { IoIosSearch } from "react-icons/io";
 import { GiSunflower } from "react-icons/gi";
 import { IoMoonSharp } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState, useRef } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
 import toast from "react-hot-toast";
 
 const formatDateForInput = (date) => {
@@ -32,6 +33,7 @@ function Navbar() {
   const [showLogout, setShowLogout] = useState(false);
   const [showAddLink, setShowAddLink] = useState(false);
   const { createLink, loading } = useCreateLink();
+  const setShowNav = useSetRecoilState(NAVOPEN);
 
   const [say, setSay] = useState({
     date: "",
@@ -139,6 +141,9 @@ function Navbar() {
       <nav className="nav">
         <div className="right-nav">
           <div className="right-nav-1">
+          <div className="menu-btn">
+            <GiHamburgerMenu className="hamburger" onClick={()=>setShowNav(true)}/>
+          </div>
             {say.type === "evening" ? (
               <IoMoonSharp className="sayType-icon-moon" />
             ) : (
@@ -158,6 +163,12 @@ function Navbar() {
             >
               <IoMdAdd className="add-icon" />
               Create new
+            </button>
+            <button
+              className="create-new-btn small-create-new-btn"
+              onClick={() => setShowAddLink(true)}
+            >
+              <IoMdAdd className="add-icon" />
             </button>
             <div className="input-div-nav">
               <IoIosSearch className="input-search-icon" />

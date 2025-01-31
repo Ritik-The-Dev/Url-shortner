@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "../styles/Sidebar.css";
 import { LuLink } from "react-icons/lu";
 import Images from "../assets";
@@ -27,53 +27,60 @@ function SideBar() {
 
   const closeNav = () => {
     setRotated(!rotated);
+    setShowNav(false);
   };
 
   return (
-    showNav && (
-      <nav className="side-nav">
-        <div className="side-nav-items">
-          <div className="close-nav">
-            <MdClose
-              onClick={closeNav}
-              className="close-nav-icon"
-              style={{
-                transform: rotated ? "rotate(180deg)" : "none",
-                transition: "transform 0.3s ease"
-              }}
-            />
-          </div>
-          <img
-            src={Images.logo}
-            alt="logo"
-            className="sidebar-logo"
-            onClick={() => navigate("/")}
-            style={{ cursor: "pointer" }}
+    <nav
+      className={`side-nav ${
+        showNav ? "left-positive-nav" : "left-negative-nav"
+      }`}
+    >
+      <div className="side-nav-items">
+        <div className="close-nav">
+          <MdClose
+            onClick={closeNav}
+            className="close-nav-icon"
+            style={{
+              transform: rotated ? "rotate(180deg)" : "none",
+              transition: "transform 0.3s ease",
+            }}
           />
-          {NavItems &&
-            NavItems?.map((e, index) => (
-              <Fragment key={e._id}>
-                {index === NavItems.length - 1 && (
-                  <span className="last-side-nav-links"></span>
-                )}
-                <div
-                  className={`side-nav-links ${
-                    location.pathname == e.link ? "side-nav-links-active" : ""
-                  }`}
-                  onClick={() => {
-                    setLinkSearch("");
-                    setAnalyticSearch("");
-                    navigate(e.link);
-                  }}
-                >
-                  <e.icon />
-                  <span>{e.name}</span>
-                </div>
-              </Fragment>
-            ))}
         </div>
-      </nav>
-    )
+        <img
+          src={Images.logo}
+          alt="logo"
+          className="sidebar-logo"
+          onClick={() => {
+            navigate("/");
+            setShowNav(false);
+          }}
+          style={{ cursor: "pointer" }}
+        />
+        {NavItems &&
+          NavItems?.map((e, index) => (
+            <Fragment key={e._id}>
+              {index === NavItems.length - 1 && (
+                <span className="last-side-nav-links"></span>
+              )}
+              <div
+                className={`side-nav-links ${
+                  location.pathname == e.link ? "side-nav-links-active" : ""
+                }`}
+                onClick={() => {
+                  setLinkSearch("");
+                  setAnalyticSearch("");
+                  navigate(e.link);
+                  setShowNav(false);
+                }}
+              >
+                <e.icon />
+                <span>{e.name}</span>
+              </div>
+            </Fragment>
+          ))}
+      </div>
+    </nav>
   );
 }
 

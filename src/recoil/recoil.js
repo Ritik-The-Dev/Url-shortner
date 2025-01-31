@@ -42,5 +42,5 @@ export const ANALYTICPAGE = atom({
 
 export const NAVOPEN = atom({
   key: "navOpen",
-  default: true,
+  default: false,
 })

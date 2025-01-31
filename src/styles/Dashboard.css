@@ -88,7 +88,6 @@
 @media screen and (max-width:1300px) {
     .dashboard-Comp{
         width: 460px;
-        /* padding: 20px 10px; */
     }
     .total-clicks-span{
         width: 97%;
@@ -101,5 +100,21 @@
 @media screen and (max-width:1200px) {
     .dashboard-Comp{
         width: 415px;
+    }
+}
+
+@media screen and (max-width:900px) {
+    .dashboard-detailed-data{
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .total-clicks-span{
+        width: 416px;
+    }
+}
+
+@media screen and (max-width:450px) {
+    .total-clicks-span{
+        width: 97%;
     }
 }

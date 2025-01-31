@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 60;
   }
   
   .url-popup {
@@ -221,4 +221,30 @@
     background-color: #1B48DA;
     color: white;
     cursor: pointer;
+  }
+
+  @media screen and (max-width:1500px) {
+  .popup-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
+  .url-popup {
+    overflow-y: auto;
+  }
+  }
+
+  @media screen and (max-width:600px) {
+    .url-popup {
+      width: 98%;
+    }
+  }
+
+  @media screen and (max-width:530px) {
+    .remove-popup {
+      width: 98%;
+    }
+    .remove-btns button{
+      width: 100px;
+    }
   }
