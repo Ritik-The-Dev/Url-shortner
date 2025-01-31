@@ -23,7 +23,7 @@ function Login() {
       const response = await login(loginData);
       if (response && response?.success) {
         setUserData(response?.data);
-        navigate("/");
+        window.location.href = "/"
       }
     } catch (error) {
       toast.error(error.message || "Login failed!");

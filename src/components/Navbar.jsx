@@ -198,7 +198,7 @@ function Navbar() {
               onClick={() => setShowLogout(!showLogout)}
             >
               {userInfo &&
-                userInfo?.username
+                userInfo?.username?.trim()
                   ?.split(" ")
                   ?.slice(0, 2)
                   ?.map((word, index) => (

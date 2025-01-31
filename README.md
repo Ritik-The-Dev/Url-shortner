@@ -1,9 +1,7 @@
-Certainly! Below is a professional and easy-to-understand README code for your project:
-
-```markdown
 # URL Shortener and Management Platform
 
-This project is a URL shortening and management platform that allows users to shorten URLs, track clicks, manage their account, and more.
+This project is a URL shortening and management platform that allows users
+ to shorten URLs, track clicks, manage their account, and more.
 
 ## Prerequisites
 
