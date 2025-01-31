@@ -4,8 +4,8 @@ import UrlPopUp from "./UrlPopUp";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Loader from "../components/Loader";
 import { IoMdAdd } from "react-icons/io";
-import { ANALYTICSEARCH, LINKSDATA, LINKSEARCH, NAVOPEN } from "../recoil/recoil";
-import { useCreateLink } from "../api/hooks";
+import { ANALYTICSEARCH, LINKSDATA, LINKSEARCH, NAVOPEN, USERDATA } from "../recoil/recoil";
+import { useCreateLink, useGetUserData } from "../api/hooks";
 import { IoIosSearch } from "react-icons/io";
 import { GiSunflower } from "react-icons/gi";
 import { IoMoonSharp } from "react-icons/io5";
@@ -34,14 +34,13 @@ function Navbar() {
   const [showAddLink, setShowAddLink] = useState(false);
   const { createLink, loading } = useCreateLink();
   const setShowNav = useSetRecoilState(NAVOPEN);
+  const [userInfo, setUserInfo] = useRecoilState(USERDATA);
+  const { getUserData, loading:userDataLoading} = useGetUserData();
 
   const [say, setSay] = useState({
     date: "",
     type: "",
   });
-  const userInfo = {
-    name: "Ritik Joshi",
-  };
   const [newUrl, setNewUrl] = useState({
     remarks: "",
     destinationUrl: "",
@@ -136,6 +135,19 @@ function Navbar() {
     };
   }, []);
 
+    const CallSettings = async () => {
+      const response = await getUserData();
+      if (response?.success) {
+        setUserInfo(response?.data);
+      }
+    };
+  
+    useEffect(() => {
+      if (!userInfo) {
+        CallSettings();
+      }
+    }, []);
+
   return (
     <>
       <nav className="nav">
@@ -151,7 +163,7 @@ function Navbar() {
             )}
             <div className="right-nav-1-tag">
               <span className="gm-text">
-                Good {say.type}, {userInfo?.name}
+                Good {say.type}, {userInfo?.username}
               </span>
               <span className="date-info">{say.date}</span>
             </div>
@@ -186,7 +198,7 @@ function Navbar() {
               onClick={() => setShowLogout(!showLogout)}
             >
               {userInfo &&
-                userInfo?.name
+                userInfo?.username
                   ?.split(" ")
                   ?.slice(0, 2)
                   ?.map((word, index) => (
@@ -219,6 +231,7 @@ function Navbar() {
         />
       )}
       {loading && <Loader text="Your new shortened URL is being created..." />}
+      {userDataLoading && <Loader text="Getting your Info..." />}
     </>
   );
 }
