@@ -162,3 +162,10 @@ input {
   align-items: center;
   justify-content: center;
 }
+
+
+@media screen and (max-width:890px) { 
+  .main-app {
+    min-height: fit-content;
+  }
+}
