@@ -25,9 +25,7 @@ function Dashboard() {
     if(!token){
       navigate('/login')
     }else{
-      if (!dashboardData) {
         CallDashboard();
-      }
     }
   }, []);
 

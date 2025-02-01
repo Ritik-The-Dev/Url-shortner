@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import "../styles/Settings.css";
 import DeletePopUp from "../components/DeletePopUp";
 import { useRecoilState } from "recoil";
 import { USERDATA } from "../recoil/recoil";
 import Loader from "../components/Loader";
-import { useDeleteUser,  useUpdateUser } from "../api/hooks";
+import { useDeleteUser, useUpdateUser } from "../api/hooks";
 import toast from "react-hot-toast";
 
 function Settings() {
-  const token = localStorage.getItem('token')
-  const navigate = useNavigate()
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
   const [isUpdated, setIsUpdated] = useState(false);
   const [deletePopUp, setDeletePopUp] = useState(false);
   const [userInfo, setUserInfo] = useRecoilState(USERDATA);
-  const {
-    updateUser,
-    loading: UpdateLoading,
-  } = useUpdateUser();
-  const {
-    deleteUser,
-    loading: DeleteLoading,
-  } = useDeleteUser();
+  const { updateUser, loading: UpdateLoading } = useUpdateUser();
+  const { deleteUser, loading: DeleteLoading } = useDeleteUser();
 
   const [updateData, setUpdatedData] = useState({
     name: "",
@@ -52,15 +46,25 @@ function Settings() {
     if (!updateData?.email?.trim()) return toast.error("Email Id is Required");
     if (!updateData?.number) return toast.error("Mobile No. is Required");
     const UpdateResponse = await updateUser(updateData);
-    if (UpdateResponse.success) {
-      setUserInfo(UpdateResponse.data);
+    if (UpdateResponse?.success) {
+      if (userInfo?.email != UpdateResponse?.data?.email) {
+        setTimeout(() => {
+          toast.loading("User Email is Updated Pls Login Again.");
+        }, 1000);
+        setTimeout(() => {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }, 2000);
+      } else {
+        setUserInfo(UpdateResponse?.data);
+      }
     }
   };
 
   const handleDeleteAccount = async () => {
     const DeleteResponse = await deleteUser();
     if (DeleteResponse.success) {
-      localStorage.removeItem("token")
+      localStorage.removeItem("token");
       navigate("/login");
     }
   };
@@ -76,19 +80,20 @@ function Settings() {
   }, [userInfo]);
 
   useEffect(() => {
-   if(updateData){
-    if (
-      updateData?.name?.trim() == userInfo?.username?.trim() &&
-      updateData?.email?.trim().toLowerCase() == userInfo?.email?.trim().toLowerCase() &&
-      updateData?.number == userInfo?.number
-    ) {
-      setIsUpdated(false);
+    if (updateData) {
+      if (
+        updateData?.name?.trim() == userInfo?.username?.trim() &&
+        updateData?.email?.trim().toLowerCase() ==
+          userInfo?.email?.trim().toLowerCase() &&
+        updateData?.number == userInfo?.number
+      ) {
+        setIsUpdated(false);
+      } else {
+        setIsUpdated(true);
+      }
     } else {
-      setIsUpdated(true);
+      setIsUpdated(false);
     }
-   } else {
-    setIsUpdated(false);
-   }
   }, [updateData]);
 
   useEffect(() => {
