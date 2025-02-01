@@ -1,11 +1,11 @@
 import "../styles/Navbar.css";
 import Images from "../assets";
 import UrlPopUp from "./UrlPopUp";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import {  useRecoilValue, useSetRecoilState } from "recoil";
 import Loader from "../components/Loader";
 import { IoMdAdd } from "react-icons/io";
 import { ANALYTICSEARCH, LINKSDATA, LINKSEARCH, NAVOPEN, USERDATA } from "../recoil/recoil";
-import { useCreateLink, useGetUserData } from "../api/hooks";
+import { useCreateLink } from "../api/hooks";
 import { IoIosSearch } from "react-icons/io";
 import { GiSunflower } from "react-icons/gi";
 import { IoMoonSharp } from "react-icons/io5";
@@ -21,6 +21,7 @@ const formatDateForInput = (date) => {
 };
 
 function Navbar() {
+  const token = localStorage.getItem('token')
   const navigate = useNavigate();
   const location = useLocation();
   const userInfoRef = useRef(null);
@@ -34,8 +35,7 @@ function Navbar() {
   const [showAddLink, setShowAddLink] = useState(false);
   const { createLink, loading } = useCreateLink();
   const setShowNav = useSetRecoilState(NAVOPEN);
-  const [userInfo, setUserInfo] = useRecoilState(USERDATA);
-  const { getUserData, loading:userDataLoading} = useGetUserData();
+  const userInfo = useRecoilValue(USERDATA);
 
   const [say, setSay] = useState({
     date: "",
@@ -134,17 +134,10 @@ function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-    const CallSettings = async () => {
-      const response = await getUserData();
-      if (response?.success) {
-        setUserInfo(response?.data);
-      }
-    };
   
     useEffect(() => {
-      if (!userInfo) {
-        CallSettings();
+      if (!token) {
+        navigate('/login')
       }
     }, []);
 
@@ -231,7 +224,6 @@ function Navbar() {
         />
       )}
       {loading && <Loader text="Your new shortened URL is being created..." />}
-      {userDataLoading && <Loader text="Getting your Info..." />}
     </>
   );
 }

@@ -5,15 +5,15 @@ import DeletePopUp from "../components/DeletePopUp";
 import { useRecoilState } from "recoil";
 import { USERDATA } from "../recoil/recoil";
 import Loader from "../components/Loader";
-import { useDeleteUser, useGetUserData, useUpdateUser } from "../api/hooks";
+import { useDeleteUser,  useUpdateUser } from "../api/hooks";
 import toast from "react-hot-toast";
 
 function Settings() {
+  const token = localStorage.getItem('token')
   const navigate = useNavigate()
   const [isUpdated, setIsUpdated] = useState(false);
   const [deletePopUp, setDeletePopUp] = useState(false);
   const [userInfo, setUserInfo] = useRecoilState(USERDATA);
-  const { getUserData, loading} = useGetUserData();
   const {
     updateUser,
     loading: UpdateLoading,
@@ -91,16 +91,9 @@ function Settings() {
    }
   }, [updateData]);
 
-  const CallSettings = async () => {
-    const response = await getUserData();
-    if (response?.success) {
-      setUserInfo(response?.data);
-    }
-  };
-
   useEffect(() => {
-    if (!userInfo) {
-      CallSettings();
+    if (!token) {
+      navigate("/login");
     }
   }, []);
 
@@ -173,7 +166,6 @@ function Settings() {
           close={() => setDeletePopUp(false)}
         />
       )}
-      {loading && <Loader text="Setting is being loaded..." />}
       {UpdateLoading && <Loader text="User is being Updated..." />}
       {DeleteLoading && <Loader text="User is being Deleted..." />}
     </div>

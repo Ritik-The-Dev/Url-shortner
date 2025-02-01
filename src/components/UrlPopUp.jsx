@@ -70,7 +70,7 @@ function UrlPopUp({
           {value.expirationEnabled && (
             <input
               type="datetime-local"
-              value={value.expirationDate}
+              value={value.expirationDate ? value.expirationDate.slice(0, 16) : ''}
               onChange={(e) =>
                 setValue((prev) => ({
                   ...prev,

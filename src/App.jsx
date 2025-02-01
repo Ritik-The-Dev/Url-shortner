@@ -30,8 +30,14 @@ function App() {
   };
 
   useEffect(() => {
-    if (!userData && (location.pathname !== "/login" && location.pathname !== "/register")) {
-      fetchData();
+    const token = localStorage.getItem('token')
+    if(!token){
+      navigate("/login")
+    }
+    else{
+      if (!userData && (location.pathname !== "/login" && location.pathname !== "/register")) {
+        fetchData();
+      }
     }
   }, []);
 

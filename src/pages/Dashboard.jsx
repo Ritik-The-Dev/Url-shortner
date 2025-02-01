@@ -5,8 +5,11 @@ import DashboardComp from "../components/DashboardComp";
 import { useRecoilState } from "recoil";
 import { DASHBOARDDATA } from "../recoil/recoil";
 import Loader from "../components/Loader";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate()
+  const token  = localStorage.getItem('token')
   const [dashboardData, setDashboardData] = useRecoilState(DASHBOARDDATA);
 
   const { getDashboardData, loading } = useGetDashboardData();
@@ -19,8 +22,12 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    if (!dashboardData) {
-      CallDashboard();
+    if(!token){
+      navigate('/login')
+    }else{
+      if (!dashboardData) {
+        CallDashboard();
+      }
     }
   }, []);
 
