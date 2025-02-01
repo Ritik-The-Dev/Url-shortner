@@ -141,6 +141,10 @@ function Navbar() {
       }
     }, []);
 
+    useEffect(()=>{
+      setValue("")
+    },[location.pathname])
+    
   return (
     <>
       <nav className="nav">
