@@ -139,10 +139,10 @@ function Analytics() {
                   analyticsData?.data?.map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       <td className="border-right min-w-176">{FormatDate(row.date)}</td>
-                      <td className="border-right text-wrap">
+                      <td className="border-right text-wrap ellipse">
                         {truncateText(row.destinationUrl)}
                       </td>
-                      <td className="border-right text-wrap">
+                      <td className="border-right text-wrap ellipse">
                         {truncateText(row.shortLink)}
                       </td>
                       <td className="border-right">{row.ipAddress}</td>
@@ -152,8 +152,8 @@ function Analytics() {
                 ) : (
                   <tr>
                     <td className="border-right">No Data Found</td>
-                    <td className="border-right text-wrap">No Data Found</td>
-                    <td className="border-right text-wrap">No Data Found</td>
+                    <td className="border-right text-wrap ellipse">No Data Found</td>
+                    <td className="border-right text-wrap ellipse">No Data Found</td>
                     <td className="border-right">No Data Found</td>
                     <td className="border-right">No Data Found</td>
                   </tr>

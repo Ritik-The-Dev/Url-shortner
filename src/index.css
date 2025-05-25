@@ -169,3 +169,7 @@ input {
     min-height: fit-content;
   }
 }
+
+.ellipse{
+  text-overflow: ellipsis;
+}

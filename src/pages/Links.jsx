@@ -201,10 +201,10 @@ function Links() {
                   linksData?.data?.map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       <td className="border-right min-w-176">{FormatDate(row.date)}</td>
-                      <td className="border-right text-wrap">
+                      <td className="border-right text-wrap ellipse">
                         {row.destinationUrl}
                       </td>
-                      <td className="border-right text-wrap">
+                      <td className="border-right text-wrap ellipse">
                         <div className="relative">
                           {row.shortLink.slice(0, 24)}
                           {row.shortLink.length > 24 ? '...' : ''}
@@ -238,10 +238,10 @@ function Links() {
                 ) : (
                   <tr>
                     <td className="border-right">No Data Available</td>
-                    <td className="border-right text-wrap">
+                    <td className="border-right text-wrap ellipse">
                       No Data Available
                     </td>
-                    <td className="border-right text-wrap">
+                    <td className="border-right text-wrap ellipse">
                       No Data Available
                     </td>
                     <td className="border-right">No Data Available</td>
