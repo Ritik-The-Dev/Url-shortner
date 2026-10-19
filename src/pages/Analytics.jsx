@@ -1,13 +1,39 @@
-import React, { useEffect, useMemo, useState } from "react";
-import "../styles/Links.css";
-import "../styles/MobileCards.css";
-import { truncateEnd } from "../utils/formatUrl";
+import React, { useEffect, useMemo } from "react";
+import "../styles/Table.css";
+import { IoCopyOutline } from "react-icons/io5";
+import { LuExternalLink } from "react-icons/lu";
 import Pagination from "../components/Pagination";
-import { RxCaretSort } from "react-icons/rx";
+import toast from "react-hot-toast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ANALYTICPAGE, ANALYTICSDATA, ANALYTICSEARCH } from "../recoil/recoil";
 import { useGetAnalytics } from "../api/hooks";
 import { debounce } from "lodash";
+
+const fmtDate = (ts) =>
+  new Date(ts).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+const copyToClipboard = (text) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => toast.success("Copied!"))
+    .catch(() => toast.error("Copy failed"));
+};
+
+/* ── device badge colour mapping ─────────────────────────── */
+const deviceClass = (device = "") => {
+  const d = device.toLowerCase();
+  if (d.includes("android") || d.includes("iphone") || d.includes("mobile"))
+    return "device-mobile";
+  if (d.includes("ipad") || d.includes("tablet")) return "device-tablet";
+  return "device-desktop";
+};
 
 function Analytics() {
   const [analyticsData, setAnalyticsData] = useRecoilState(ANALYTICSDATA);
@@ -15,204 +41,176 @@ function Analytics() {
   const [currentPage, setCurrentPage] = useRecoilState(ANALYTICPAGE);
   const { getAnalytics, loading } = useGetAnalytics();
 
-  const CallAnalytics = async () => {
-    const response = await getAnalytics({
+  const callAnalytics = async () => {
+    const res = await getAnalytics({
       remarks: search,
       page: currentPage,
       limit: 10,
     });
-    if (response?.success) {
-      setAnalyticsData(response);
-      if (response?.count <= (currentPage - 1) * 10) {
-        setCurrentPage(1);
-      }      
+    if (res?.success) {
+      setAnalyticsData(res);
+      if (res?.count <= (currentPage - 1) * 10) setCurrentPage(1);
     }
   };
 
-  const truncateText = (text, length = 40) => {
-    if (!text) return "";
-    return text.length > length ? text.substring(0, length) + "..." : text;
-  };
+  const debouncedCall = useMemo(() => debounce(callAnalytics, 400), [callAnalytics]);
 
-  const FormatDate = (timestamp) => {
-    const date = new Date(timestamp);
-
-    const formattedDate = date.toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: false,
-    });
-
-    return formattedDate;
-  };
-
-  const debouncedCallAnalytics = useMemo(
-    () => debounce(CallAnalytics, 500),
-    [CallAnalytics]
-  );
-
+  useEffect(() => { if (!analyticsData) callAnalytics(); }, []);
   useEffect(() => {
-    if (!analyticsData) {
-      CallAnalytics();
-    }
-  }, []);
-
-  useEffect(() => {
-    debouncedCallAnalytics();
-    return () => {
-      debouncedCallAnalytics.cancel();
-    };
+    debouncedCall();
+    return () => debouncedCall.cancel();
   }, [currentPage, search]);
 
-  const renderMobileCards = () => {
-    if (!analyticsData?.data?.length) {
-      return <div className="data-card-empty">No analytics data yet.</div>;
-    }
-
-    return analyticsData.data.map((row, rowIndex) => (
-      <article className="data-card" key={`${row.date}-${rowIndex}`}>
-        <div className="data-card-header">
-          <time className="data-card-date">{FormatDate(row.date)}</time>
-          <span className="status-pill status-active">{row.userDevice}</span>
-        </div>
-        <div className="data-card-field">
-          <span className="data-card-label">Short link</span>
-          <p className="data-card-value data-card-value--link">
-            {truncateEnd(row.shortLink, 40)}
-          </p>
-        </div>
-        <div className="data-card-field">
-          <span className="data-card-label">Original URL</span>
-          <p className="data-card-value">{truncateEnd(row.destinationUrl, 56)}</p>
-        </div>
-        <div className="data-card-meta">
-          <span className="data-card-meta-item">
-            IP: <strong>{row.ipAddress}</strong>
-          </span>
-        </div>
-      </article>
-    ));
-  };
+  const rows = analyticsData?.data ?? [];
 
   return (
     <div className="main-app">
-      <div className="link-page">
-        <div className="link-page-scroll">
-        <div className="data-cards-mobile">
-          {loading ? (
-            <div className="data-card-empty">Fetching analytics…</div>
-          ) : (
-            renderMobileCards()
-          )}
-        </div>
-        <div className="custom-table-container table-desktop-wrap">
-          <p className="custom-table-scroll-hint">Swipe horizontally to see all columns</p>
-          {loading ? (
-            <table
-              className="custom-table"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <thead
-                style={{
-                  width: "100%",
-                }}
-              >
+      <div className="tbl-page">
+
+        {/* ── Desktop table ── */}
+        <div className="tbl-wrap">
+          <table className="tbl">
+            <thead>
+              <tr>
+                <th className="tbl-th" style={{ width: 160 }}>Timestamp</th>
+                <th className="tbl-th">Original URL</th>
+                <th className="tbl-th" style={{ width: 200 }}>Short Link</th>
+                <th className="tbl-th" style={{ width: 140 }}>IP Address</th>
+                <th className="tbl-th tbl-center" style={{ width: 120 }}>Device</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
                 <tr>
-                  <th className="sortable">
-                    <span className="sortable-inner">
-                      Timestamp
-                      <RxCaretSort className="sort-icon" />
-                    </span>
-                  </th>
-                  <th>Original Link</th>
-                  <th>Short Link</th>
-                  <th>ip address</th>
-                  <th>User Device</th>
+                  <td colSpan={5} className="tbl-loading">
+                    <span className="tbl-spinner" />
+                    Loading analytics…
+                  </td>
                 </tr>
-              </thead>
-              <div className="inner-loader">
-                <div className="loader-container">
-                  <svg
-                    className="loader-spinner"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="loader-circle"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="loader-path"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                    ></path>
-                  </svg>
-                  <span className="loader-text" style={{ color: "black" }}>
-                    {"Fetching Analytics Please Wait..."}
+              ) : rows.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="tbl-empty">
+                    No click data yet — share a short link to start tracking.
+                  </td>
+                </tr>
+              ) : (
+                rows.map((row, i) => (
+                  <tr key={i} className="tbl-row">
+
+                    {/* Timestamp */}
+                    <td className="tbl-td tbl-date">{fmtDate(row.date)}</td>
+
+                    {/* Original URL */}
+                    <td className="tbl-td">
+                      <div className="url-cell">
+                        <span className="url-text" title={row.destinationUrl}>
+                          {row.destinationUrl}
+                        </span>
+                        <div className="url-actions">
+                          <button
+                            className="icon-btn"
+                            title="Copy URL"
+                            onClick={() => copyToClipboard(row.destinationUrl)}
+                          >
+                            <IoCopyOutline />
+                          </button>
+                          <a
+                            href={
+                              /^https?:\/\//i.test(row.destinationUrl)
+                                ? row.destinationUrl
+                                : `https://${row.destinationUrl}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="icon-btn"
+                            title="Open URL"
+                          >
+                            <LuExternalLink />
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Short link */}
+                    <td className="tbl-td">
+                      <div className="url-cell">
+                        <span className="url-text url-text--blue" title={row.shortLink}>
+                          {row.shortLink}
+                        </span>
+                        <button
+                          className="icon-btn"
+                          title="Copy short link"
+                          onClick={() => copyToClipboard(row.shortLink)}
+                        >
+                          <IoCopyOutline />
+                        </button>
+                      </div>
+                    </td>
+
+                    {/* IP */}
+                    <td className="tbl-td tbl-mono">{row.ipAddress}</td>
+
+                    {/* Device */}
+                    <td className="tbl-td tbl-center">
+                      <span className={`device-badge ${deviceClass(row.userDevice)}`}>
+                        {row.userDevice}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* ── Mobile cards ── */}
+        <div className="cards-mobile">
+          {loading ? (
+            <div className="card-empty">Loading analytics…</div>
+          ) : rows.length === 0 ? (
+            <div className="card-empty">No click data yet.</div>
+          ) : (
+            rows.map((row, i) => (
+              <div className="card" key={i}>
+                <div className="card-top">
+                  <span className="card-date">{fmtDate(row.date)}</span>
+                  <span className={`device-badge ${deviceClass(row.userDevice)}`}>
+                    {row.userDevice}
                   </span>
                 </div>
+
+                <div className="card-field">
+                  <span className="card-label">Short Link</span>
+                  <div className="card-url-row">
+                    <span className="card-url card-url--blue">{row.shortLink}</span>
+                    <button className="icon-btn" onClick={() => copyToClipboard(row.shortLink)}>
+                      <IoCopyOutline />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="card-field">
+                  <span className="card-label">Original URL</span>
+                  <div className="card-url-row">
+                    <span className="card-url">{row.destinationUrl}</span>
+                    <button className="icon-btn" onClick={() => copyToClipboard(row.destinationUrl)}>
+                      <IoCopyOutline />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="card-meta">
+                  <span>IP: <strong>{row.ipAddress}</strong></span>
+                </div>
               </div>
-            </table>
-          ) : (
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th className="sortable">
-                    <span className="sortable-inner">
-                      Timestamp
-                      <RxCaretSort className="sort-icon" />
-                    </span>
-                  </th>
-                  <th>Original Link</th>
-                  <th>Short Link</th>
-                  <th>ip address</th>
-                  <th>User Device</th>
-                </tr>
-              </thead>
-              <tbody>
-                {analyticsData?.data?.length ? (
-                  analyticsData?.data?.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      <td className="border-right min-w-176">{FormatDate(row.date)}</td>
-                      <td className="border-right text-wrap">
-                        {truncateText(row.destinationUrl)}
-                      </td>
-                      <td className="border-right text-wrap">
-                        {truncateText(row.shortLink)}
-                      </td>
-                      <td className="border-right">{row.ipAddress}</td>
-                      <td className="border-right min-w-128">{row.userDevice}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td className="border-right">No Data Found</td>
-                    <td className="border-right text-wrap">No Data Found</td>
-                    <td className="border-right text-wrap">No Data Found</td>
-                    <td className="border-right">No Data Found</td>
-                    <td className="border-right">No Data Found</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+            ))
           )}
         </div>
-        </div>
+
         <Pagination
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
           count={analyticsData?.count}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
       </div>
     </div>

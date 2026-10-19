@@ -1,11 +1,5 @@
 :root {
-  --app-nav-height: 72px;
-}
-
-@media screen and (max-width: 900px) {
-  :root {
-    --app-nav-height: 72px;
-  }
+  --app-nav-height: 64px;
 }
 
 * {
@@ -67,20 +61,6 @@ input {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.app-side--home {
-  --app-nav-height: 72px;
-}
-
-.app-side--toolbar {
-  --app-nav-height: 72px;
-}
-
-@media screen and (max-width: 900px) {
-  .app-side--toolbar {
-    --app-nav-height: 118px;
-  }
 }
 
 .page-transition {
@@ -246,14 +226,6 @@ input {
   font-weight: bold;
   color: #000000;
 }
-
-.inner-loader{
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 
 @media screen and (max-width:890px) { 
   .main-app {

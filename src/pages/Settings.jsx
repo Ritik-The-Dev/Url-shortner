@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useRef } from "react";
+import React, { Suspense, lazy, useRef } from "react"; // Suspense+lazy for LinkChainScene, useRef for GSAP scope
 import "../styles/Settings.css";
 import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
