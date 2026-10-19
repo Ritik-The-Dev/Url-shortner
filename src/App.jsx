@@ -1,65 +1,53 @@
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
-import Settings from "./pages/Settings";
 import Navbar from "./components/Navbar";
-import React, { useEffect } from "react";
-import Loader from "./components/Loader";
+import React from "react";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import About from "./pages/Settings";
+import { Route, Routes, useLocation } from "react-router-dom";
 import SideBar from "./components/SideBar";
 import Links from "./pages/Links";
+import PageTransition from "./components/PageTransition";
 import { useRecoilState } from "recoil";
-import { useGetUserData } from "./api/hooks";
-import { USERDATA } from "./recoil/recoil";
+import { NAVOPEN } from "./recoil/recoil";
 
 function App() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const [userData, setUserData] = useRecoilState(USERDATA);
-  const { getUserData, loading } = useGetUserData();
-
-  const fetchData = async () => {
-    const response = await getUserData();
-    if (response && response?.success) {
-      setUserData(response?.data);
-    } else {
-      navigate("/login");
-    }
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if(!token){
-      navigate("/login")
-    }
-    else{
-      if (!userData && (location.pathname !== "/login" && location.pathname !== "/register")) {
-        fetchData();
-      }
-    }
-  }, []);
+  const [showNav, setShowNav] = useRecoilState(NAVOPEN);
 
   return (
     <div className="app">
-      {location.pathname !== "/login" && location.pathname !== "/register" && (
-        <SideBar />
+      <SideBar />
+      {showNav && (
+        <button
+          type="button"
+          className="nav-backdrop"
+          aria-label="Close navigation menu"
+          onClick={() => setShowNav(false)}
+        />
       )}
-      <div className="app-side">
-        {location.pathname !== "/login" &&
-          location.pathname !== "/register" && <Navbar />}
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/links" element={<Links />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/*" element={<NotFound />} />
-        </Routes>
+      <div
+        className={[
+          "app-side",
+          location.pathname === "/" && "app-side--home",
+          (location.pathname === "/links" ||
+            location.pathname === "/analytics") &&
+            "app-side--toolbar",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <Navbar />
+        <PageTransition>
+          <Routes location={location}>
+            <Route path="/" element={<About />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/links" element={<Links />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/*" element={<NotFound />} />
+          </Routes>
+        </PageTransition>
       </div>
-      {loading && <Loader text={"Setting Things Up for You..."} />}
     </div>
   );
 }

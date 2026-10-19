@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
-import "../styles/Analytics.css";
+import "../styles/Links.css";
+import "../styles/MobileCards.css";
+import { truncateEnd } from "../utils/formatUrl";
 import Pagination from "../components/Pagination";
 import { RxCaretSort } from "react-icons/rx";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -27,7 +29,8 @@ function Analytics() {
     }
   };
 
-  const truncateText = (text, length) => {
+  const truncateText = (text, length = 40) => {
+    if (!text) return "";
     return text.length > length ? text.substring(0, length) + "..." : text;
   };
 
@@ -64,10 +67,49 @@ function Analytics() {
     };
   }, [currentPage, search]);
 
+  const renderMobileCards = () => {
+    if (!analyticsData?.data?.length) {
+      return <div className="data-card-empty">No analytics data yet.</div>;
+    }
+
+    return analyticsData.data.map((row, rowIndex) => (
+      <article className="data-card" key={`${row.date}-${rowIndex}`}>
+        <div className="data-card-header">
+          <time className="data-card-date">{FormatDate(row.date)}</time>
+          <span className="status-pill status-active">{row.userDevice}</span>
+        </div>
+        <div className="data-card-field">
+          <span className="data-card-label">Short link</span>
+          <p className="data-card-value data-card-value--link">
+            {truncateEnd(row.shortLink, 40)}
+          </p>
+        </div>
+        <div className="data-card-field">
+          <span className="data-card-label">Original URL</span>
+          <p className="data-card-value">{truncateEnd(row.destinationUrl, 56)}</p>
+        </div>
+        <div className="data-card-meta">
+          <span className="data-card-meta-item">
+            IP: <strong>{row.ipAddress}</strong>
+          </span>
+        </div>
+      </article>
+    ));
+  };
+
   return (
     <div className="main-app">
       <div className="link-page">
-        <div className="custom-table-container">
+        <div className="link-page-scroll">
+        <div className="data-cards-mobile">
+          {loading ? (
+            <div className="data-card-empty">Fetching analytics…</div>
+          ) : (
+            renderMobileCards()
+          )}
+        </div>
+        <div className="custom-table-container table-desktop-wrap">
+          <p className="custom-table-scroll-hint">Swipe horizontally to see all columns</p>
           {loading ? (
             <table
               className="custom-table"
@@ -83,8 +125,10 @@ function Analytics() {
               >
                 <tr>
                   <th className="sortable">
-                    Timestamp
-                    <RxCaretSort className="sort-icon" />
+                    <span className="sortable-inner">
+                      Timestamp
+                      <RxCaretSort className="sort-icon" />
+                    </span>
                   </th>
                   <th>Original Link</th>
                   <th>Short Link</th>
@@ -125,8 +169,10 @@ function Analytics() {
               <thead>
                 <tr>
                   <th className="sortable">
-                    Timestamp
-                    <RxCaretSort className="sort-icon" />
+                    <span className="sortable-inner">
+                      Timestamp
+                      <RxCaretSort className="sort-icon" />
+                    </span>
                   </th>
                   <th>Original Link</th>
                   <th>Short Link</th>
@@ -161,6 +207,7 @@ function Analytics() {
               </tbody>
             </table>
           )}
+        </div>
         </div>
         <Pagination
           setCurrentPage={setCurrentPage}

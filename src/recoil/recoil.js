@@ -1,10 +1,5 @@
 import { atom } from "recoil";
 
-export const USERDATA = atom({
-  key: "userData",
-  default: undefined,
-});
-
 export const DASHBOARDDATA = atom({
   key: "dashboardData",
   default: undefined,

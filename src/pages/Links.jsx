@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "../styles/Links.css";
+import "../styles/MobileCards.css";
+import { truncateEnd } from "../utils/formatUrl";
 import { RiPencilFill, RiDeleteBin6Line } from "react-icons/ri";
 import Pagination from "../components/Pagination";
 import { RxCaretSort } from "react-icons/rx";
@@ -116,10 +118,82 @@ function Links() {
     };
   }, [currentPage, search]);
 
+  const renderMobileCards = () => {
+    if (!linksData?.data?.length) {
+      return <div className="data-card-empty">No links yet. Tap + to create one.</div>;
+    }
+
+    return linksData.data.map((row) => (
+      <article className="data-card" key={row._id || row.shortLink}>
+        <div className="data-card-header">
+          <time className="data-card-date">{FormatDate(row.date)}</time>
+          <span className={`status-pill status-${row.status.toLowerCase()}`}>
+            {row.status}
+          </span>
+        </div>
+        <div className="data-card-field">
+          <span className="data-card-label">Short link</span>
+          <div className="data-card-short-row">
+            <span className="data-card-value data-card-value--link">
+              {truncateEnd(row.shortLink, 36)}
+            </span>
+            <button
+              type="button"
+              className="data-card-copy"
+              onClick={() => handleCopy(row.shortLink)}
+              aria-label="Copy short link"
+            >
+              <IoCopyOutline />
+            </button>
+          </div>
+        </div>
+        <div className="data-card-field">
+          <span className="data-card-label">Original URL</span>
+          <p className="data-card-value">{row.destinationUrl}</p>
+        </div>
+        <div className="data-card-meta">
+          <span className="data-card-meta-item">
+            Clicks: <strong>{row.clicks}</strong>
+          </span>
+          {row.remarks ? (
+            <span className="data-card-meta-item">
+              Remark: <strong>{row.remarks}</strong>
+            </span>
+          ) : null}
+        </div>
+        <div className="data-card-actions">
+          <button
+            type="button"
+            className="data-card-action-btn"
+            onClick={() => setUrlData(row)}
+          >
+            <RiPencilFill /> Edit
+          </button>
+          <button
+            type="button"
+            className="data-card-action-btn data-card-action-btn--danger"
+            onClick={() => setDeletePopUp(row._id)}
+          >
+            <RiDeleteBin6Line /> Delete
+          </button>
+        </div>
+      </article>
+    ));
+  };
+
   return (
     <div className="main-app">
       <div className="link-page">
-        <div className="custom-table-container">
+        <div className="link-page-scroll">
+        <div className="data-cards-mobile">
+          {loading ? (
+            <div className="data-card-empty">Fetching links…</div>
+          ) : (
+            renderMobileCards()
+          )}
+        </div>
+        <div className="custom-table-container table-desktop-wrap">
+          <p className="custom-table-scroll-hint">Swipe horizontally to see all columns</p>
           {loading ? (
             <table
               className="custom-table"
@@ -135,16 +209,20 @@ function Links() {
               >
                 <tr>
                   <th className="sortable">
-                    Date
-                    <RxCaretSort className="sort-icon" />
+                    <span className="sortable-inner">
+                      Date
+                      <RxCaretSort className="sort-icon" />
+                    </span>
                   </th>
                   <th>Original Link</th>
                   <th>Short Link</th>
                   <th>Remarks</th>
                   <th>Clicks</th>
                   <th className="sortable">
-                    Status
-                    <RxCaretSort className="sort-icon" />
+                    <span className="sortable-inner">
+                      Status
+                      <RxCaretSort className="sort-icon" />
+                    </span>
                   </th>
                   <th>Action</th>
                 </tr>
@@ -182,16 +260,20 @@ function Links() {
               <thead>
                 <tr>
                   <th className="sortable">
-                    Date
-                    <RxCaretSort className="sort-icon" />
+                    <span className="sortable-inner">
+                      Date
+                      <RxCaretSort className="sort-icon" />
+                    </span>
                   </th>
                   <th>Original Link</th>
                   <th>Short Link</th>
                   <th>Remarks</th>
                   <th>Clicks</th>
                   <th className="sortable">
-                    Status
-                    <RxCaretSort className="sort-icon" />
+                    <span className="sortable-inner">
+                      Status
+                      <RxCaretSort className="sort-icon" />
+                    </span>
                   </th>
                   <th>Action</th>
                 </tr>
@@ -201,7 +283,7 @@ function Links() {
                   linksData?.data?.map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       <td className="border-right min-w-176">{FormatDate(row.date)}</td>
-                      <td className="border-right text-wrap">
+                      <td className="border-right url-cell">
                         {row.destinationUrl}
                       </td>
                       <td className="border-right text-wrap">
@@ -253,6 +335,7 @@ function Links() {
               </tbody>
             </table>
           )}
+        </div>
         </div>
         <Pagination
           count={linksData?.count}

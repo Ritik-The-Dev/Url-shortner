@@ -1,53 +1,8 @@
 import { useState } from "react";
 import apiCall from "./apiCall";
 
-// const API_URL = "http://localhost:999/api/v1";  //For Local
-const API_URL = "https://url-shorteners.vercel.app/api/v1"; //For Deployment
-
-export const useLogin = () => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
-
-  const login = async (payload) => {
-    setLoading(true);
-    const res = await apiCall("POST", `${API_URL}/login`, payload);
-    setResponse(res);
-    setLoading(false);
-    return res;
-  };
-
-  return { login, loading, response };
-};
-
-export const useRegister = () => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
-
-  const register = async (payload) => {
-    setLoading(true);
-    const res = await apiCall("POST", `${API_URL}/register`, payload);
-    setResponse(res);
-    setLoading(false);
-    return res;
-  };
-
-  return { register, loading, response };
-};
-
-export const useGetUserData = () => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
-
-  const getUserData = async () => {
-    setLoading(true);
-    const res = await apiCall("GET", `${API_URL}/user`, {}, {}, false);
-    setResponse(res);
-    setLoading(false);
-    return res;
-  };
-
-  return { getUserData, loading, response };
-};
+const API_URL = "http://localhost:999/api/v1";  //For Local
+// const API_URL = "https://url-shorteners.vercel.app/api/v1"; //For Deployment
 
 export const useGetDashboardData = () => {
   const [loading, setLoading] = useState(false);
@@ -55,7 +10,7 @@ export const useGetDashboardData = () => {
 
   const getDashboardData = async () => {
     setLoading(true);
-    const res = await apiCall("GET", `${API_URL}/dashboard`);
+    const res = await apiCall("GET", `${API_URL}/dashboard`, {}, false);
     setResponse(res);
     setLoading(false);
     return res;
@@ -70,7 +25,8 @@ export const useCreateLink = () => {
 
   const createLink = async (payload) => {
     setLoading(true);
-    const res = await apiCall("POST", `${API_URL}/create-link`, payload);
+    // showToast=false — Navbar shows a richer custom toast with copy button
+    const res = await apiCall("POST", `${API_URL}/create-link`, payload, false);
     setResponse(res);
     setLoading(false);
     return res;
@@ -120,7 +76,9 @@ export const useGetLinks = () => {
     setLoading(true);
     const res = await apiCall(
       "GET",
-      `${API_URL}/links?page=${payload?.page}&limit=${payload?.limit}&remarks=${payload.remarks}`
+      `${API_URL}/links?page=${payload?.page}&limit=${payload?.limit}&remarks=${payload.remarks}`,
+      {},
+      false
     );
     setResponse(res);
     setLoading(false);
@@ -138,7 +96,9 @@ export const useGetAnalytics = () => {
     setLoading(true);
     const res = await apiCall(
       "GET",
-      `${API_URL}/analytics?page=${payload?.page}&limit=${payload?.limit}&remarks=${payload.remarks}`
+      `${API_URL}/analytics?page=${payload?.page}&limit=${payload?.limit}&remarks=${payload.remarks}`,
+      {},
+      false
     );
     setResponse(res);
     setLoading(false);
@@ -146,34 +106,4 @@ export const useGetAnalytics = () => {
   };
 
   return { getAnalytics, loading, response };
-};
-
-export const useUpdateUser = () => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
-
-  const updateUser = async (payload) => {
-    setLoading(true);
-    const res = await apiCall("PUT", `${API_URL}/updateUser`, payload);
-    setResponse(res);
-    setLoading(false);
-    return res;
-  };
-
-  return { updateUser, loading, response };
-};
-
-export const useDeleteUser = () => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
-
-  const deleteUser = async () => {
-    setLoading(true);
-    const res = await apiCall("DELETE", `${API_URL}/delete-user`);
-    setResponse(res);
-    setLoading(false);
-    return res;
-  };
-
-  return { deleteUser, loading, response };
 };

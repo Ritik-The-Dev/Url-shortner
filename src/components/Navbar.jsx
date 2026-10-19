@@ -1,16 +1,16 @@
 import "../styles/Navbar.css";
 import Images from "../assets";
 import UrlPopUp from "./UrlPopUp";
-import {  useRecoilValue, useSetRecoilState } from "recoil";
+import {  useSetRecoilState } from "recoil";
 import Loader from "../components/Loader";
 import { IoMdAdd } from "react-icons/io";
-import { ANALYTICSEARCH, LINKSDATA, LINKSEARCH, NAVOPEN, USERDATA } from "../recoil/recoil";
+import { ANALYTICSEARCH, LINKSDATA, LINKSEARCH, NAVOPEN } from "../recoil/recoil";
 import { useCreateLink } from "../api/hooks";
 import { IoIosSearch } from "react-icons/io";
 import { GiSunflower } from "react-icons/gi";
 import { IoMoonSharp } from "react-icons/io5";
-import { useLocation, useNavigate } from "react-router-dom";
-import React, { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import toast from "react-hot-toast";
 
@@ -21,21 +21,15 @@ const formatDateForInput = (date) => {
 };
 
 function Navbar() {
-  const token = localStorage.getItem('token')
-  const navigate = useNavigate();
   const location = useLocation();
-  const userInfoRef = useRef(null);
-  const logoutDivRef = useRef(null);
   const setLinkSearch = useSetRecoilState(LINKSEARCH);
   const setAnalyticSearch = useSetRecoilState(ANALYTICSEARCH);
   const [value, setValue] = useState("");
   const setLinks = useSetRecoilState(LINKSDATA);
   const [UrlError, setUrlError] = useState(false);
-  const [showLogout, setShowLogout] = useState(false);
   const [showAddLink, setShowAddLink] = useState(false);
   const { createLink, loading } = useCreateLink();
   const setShowNav = useSetRecoilState(NAVOPEN);
-  const userInfo = useRecoilValue(USERDATA);
 
   const [say, setSay] = useState({
     date: "",
@@ -73,22 +67,44 @@ function Navbar() {
         expirationEnabled: false,
       });
       setLinks(response);
-    }
-  };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token")
-    navigate("/login");
-  };
-
-  const handleClickOutside = (event) => {
-    if (
-      userInfoRef.current &&
-      !userInfoRef.current.contains(event.target) &&
-      logoutDivRef.current &&
-      !logoutDivRef.current.contains(event.target)
-    ) {
-      setShowLogout(false);
+      // Show the short URL with a copy action
+      const shortLink = response?.createdLink?.shortLink;
+      if (shortLink) {
+        toast(
+          (t) => (
+            <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span style={{ fontSize: "13px" }}>
+                <strong>Created!</strong>{" "}
+                <span style={{ color: "#1B48DA", wordBreak: "break-all" }}>
+                  {shortLink}
+                </span>
+              </span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(shortLink);
+                  toast.dismiss(t.id);
+                  toast.success("Copied to clipboard!");
+                }}
+                style={{
+                  background: "#1B48DA",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "6px",
+                  padding: "5px 12px",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                }}
+              >
+                Copy
+              </button>
+            </span>
+          ),
+          { duration: 6000 }
+        );
+      }
     }
   };
 
@@ -128,92 +144,93 @@ function Navbar() {
     });
   }, []);
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-  
-    useEffect(() => {
-      if (!token) {
-        navigate('/login')
-      }
-    }, []);
-
-    useEffect(()=>{
-      setValue("")
-    },[location.pathname])
+  useEffect(()=>{
+    setValue("")
+  },[location.pathname])
     
+  const isHome = location.pathname === "/";
+  const showSearch =
+    location.pathname === "/links" || location.pathname === "/analytics";
+
+  const pageTitles = {
+    "/dashboard": "Dashboard",
+    "/links": "Links",
+    "/analytics": "Analytics",
+  };
+  const pageTitle = pageTitles[location.pathname];
+
   return (
     <>
-      <nav className="nav">
+      <nav
+        className={[
+          "nav",
+          isHome && "nav--home",
+          showSearch && "nav--toolbar",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <div className="right-nav">
-          <div className="right-nav-1">
-          <div className="menu-btn">
-            <GiHamburgerMenu className="hamburger" onClick={()=>setShowNav(true)}/>
-          </div>
-            {say.type === "evening" ? (
-              <IoMoonSharp className="sayType-icon-moon" />
-            ) : (
-              <GiSunflower className="sayType-icon" />
-            )}
-            <div className="right-nav-1-tag">
-              <span className="gm-text">
-                Good {say.type}, {userInfo?.username}
-              </span>
-              <span className="date-info">{say.date}</span>
+          <div className="nav-row-main">
+            <div className="right-nav-1">
+              <div className="menu-btn">
+                <GiHamburgerMenu
+                  className="hamburger"
+                  onClick={() => setShowNav(true)}
+                />
+              </div>
+              {say.type === "evening" ? (
+                <IoMoonSharp className="sayType-icon-moon" />
+              ) : (
+                <GiSunflower className="sayType-icon" />
+              )}
+              <div className="right-nav-1-tag">
+                <span className="gm-text">
+                  <span className="gm-line">Good {say.type}!</span>
+                  {isHome ? (
+                    <span className="gm-sub">URL Shortener</span>
+                  ) : (
+                    pageTitle && (
+                      <span className="gm-sub">{pageTitle}</span>
+                    )
+                  )}
+                </span>
+                <span className="date-info">{say.date}</span>
+              </div>
             </div>
-          </div>
-          <div className="right-nav-2">
-            <button
-              className="create-new-btn"
-              onClick={() => setShowAddLink(true)}
-            >
-              <IoMdAdd className="add-icon" />
-              Create new
-            </button>
-            <button
-              className="create-new-btn small-create-new-btn"
-              onClick={() => setShowAddLink(true)}
-            >
-              <IoMdAdd className="add-icon" />
-            </button>
-            <div className="input-div-nav">
-              <IoIosSearch className="input-search-icon" />
-              <input
-                type="text"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                placeholder="Search by remarks"
-                className="search-input"
-              />
-            </div>
-            <div
-              className="userinfo-icon"
-              ref={userInfoRef}
-              onClick={() => setShowLogout(!showLogout)}
-            >
-              {userInfo &&
-                userInfo?.username?.trim()
-                  ?.split(" ")
-                  ?.slice(0, 2)
-                  ?.map((word, index) => (
-                    <span key={index}>
-                      {word.length && word[0]?.toUpperCase()}
-                    </span>
-                  ))}
-            </div>
-            {showLogout && (
+            <div className="nav-quick-actions">
               <button
-                onClick={handleLogout}
-                className="logout-div"
-                ref={logoutDivRef}
+                type="button"
+                className="create-new-btn"
+                onClick={() => setShowAddLink(true)}
               >
-                Logout
+                <IoMdAdd className="add-icon" />
+                <span className="create-new-label">Create new</span>
               </button>
-            )}
+              <button
+                type="button"
+                className="create-new-btn small-create-new-btn"
+                onClick={() => setShowAddLink(true)}
+                aria-label="Create new link"
+              >
+                <IoMdAdd className="add-icon" />
+              </button>
+            </div>
           </div>
+          {showSearch && (
+            <div className="nav-row-search">
+              <div className="input-div-nav">
+                <IoIosSearch className="input-search-icon" />
+                <input
+                  type="text"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder="Search by remarks"
+                  className="search-input"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </nav>
       {showAddLink && (
@@ -227,7 +244,7 @@ function Navbar() {
           buttonName="Create new"
         />
       )}
-      {loading && <Loader text="Your new shortened URL is being created..." />}
+      {loading && <Loader text="Creating your shortened URL..." />}
     </>
   );
 }
