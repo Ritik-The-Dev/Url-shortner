@@ -300,7 +300,7 @@ function About() {
           <h2 className="about-section-title reveal-item">Project links</h2>
           <div className="about-link-row">
             <a
-              href="https://github.com"
+              href="https://github.com/ritik-the-dev"
               target="_blank"
               rel="noopener noreferrer"
               className="about-link reveal-item magnetic-link"
@@ -309,7 +309,7 @@ function About() {
               Source Code
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/ritikjoshi"
               target="_blank"
               rel="noopener noreferrer"
               className="about-link reveal-item magnetic-link"
@@ -318,7 +318,7 @@ function About() {
               LinkedIn
             </a>
             <a
-              href="#"
+              href="https://ritik.biz"
               target="_blank"
               rel="noopener noreferrer"
               className="about-link reveal-item magnetic-link"
@@ -326,7 +326,7 @@ function About() {
               <FaGlobe className="about-link-icon" />
               Portfolio
             </a>
-            <a href="mailto:you@example.com" className="about-link reveal-item magnetic-link">
+            <a href="mailto:joshiritik175@gmail.com" className="about-link reveal-item magnetic-link">
               <MdEmail className="about-link-icon" />
               Contact
             </a>
